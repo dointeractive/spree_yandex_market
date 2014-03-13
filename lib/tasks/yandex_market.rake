@@ -50,8 +50,10 @@ namespace :spree_yandex_market do
   def generate_export_file(ts='yandex_market')
     require File.expand_path(File.join(Rails.root, "config/environment"))
     require File.join(File.dirname(__FILE__), '..', "export/#{ts}_exporter.rb")
-    decorator_file = File.join(Rails.root, "app/export/#{ts}_exporter_decorator.rb")
-    require File.expand_path decorator_file if File.exists? decorator_file
+    
+    decorator_file = [Gem::Specification.find_by_name("instamart_core").gem_dir,
+      'app', 'export', "#{ts}_exporter_decorator.rb"].join('/')
+    require decorator_file if File.exists? decorator_file
     
     directory = File.join(Rails.root, 'public', "#{ts}")
     mkdir_p directory unless File.exist?(directory)
