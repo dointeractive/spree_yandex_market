@@ -44,10 +44,12 @@ module Export
             
             xml.categories { # категории товара
               Spree::Taxonomy.all.each do |taxonomy|
-                taxonomy.root.self_and_descendants.each do |cat|
-                  @cat_opt = { :id => cat.id }
-                  @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
-                  xml.category(@cat_opt){ xml  << cat.name }
+                taxonomy.root.self_and_descendants.published.each do |cat|
+                  if cat.available_for_search?
+                    @cat_opt = { :id => cat.id }
+                    @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
+                    xml.category(@cat_opt){ xml  << cat.name }
+                  end
                 end
               end
             }
@@ -57,7 +59,7 @@ module Export
               products = products.on_hand if @config.preferred_wares == "on_hand"
               products = products.where(:export_to_yandex_market => true).group_by_products_id
               products.each do |product|
-                offer(xml, product, product.taxons.first) unless product.taxons.empty?
+                offer(xml, product, product.taxons.first) unless product.taxons.empty? and !product.published_category?
               end
             }
           }
