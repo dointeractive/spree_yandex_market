@@ -59,7 +59,7 @@ module Export
               products = products.on_hand if @config.preferred_wares == "on_hand"
               products = products.where(:export_to_yandex_market => true).group_by_products_id
               products.each do |product|
-                offer(xml, product, product.taxons.first) unless product.taxons.empty? and !product.published_category?
+                offer(xml, product, product.taxons.first) if !product.taxons.empty? and product.published_category?
               end
             }
           }
