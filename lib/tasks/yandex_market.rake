@@ -52,6 +52,11 @@ namespace :spree_yandex_market do
     generate_export_file 'yandex_market_with_discount'
   end
 
+  desc "Generate Yandex.Market.Additional export file"
+  task :generate_ym_additional => :environment do
+    generate_export_file 'yandex_market_additional'
+  end
+
   def generate_export_file(ts='yandex_market')
     require File.expand_path(File.join(Rails.root, "config/environment"))
     require File.join(File.dirname(__FILE__), '..', "export/#{ts}_exporter.rb")
