@@ -55,10 +55,9 @@ module Export
             }
             
             xml.offers { # список товаров
-              products = Spree::Product.active.master_price_gte(0.001)
+              products = Spree::Product.active.where(export_to_yandex_market: true).group_by_products_id
               products = products.on_hand if @config.preferred_wares == "on_hand"
-              products = products.where(export_to_yandex_market: true).group_by_products_id
-              products = products.joins(:taxons).where(taxons: { export_to_yandex_market: true })
+              products = products.joins(:taxons).where(spree_taxons: { export_to_yandex_market: true })
               products.find_each do |product|
                 offer(xml, product, product.taxons.first) if !product.taxons.empty? and product.published_category?
               end
@@ -101,7 +100,7 @@ module Export
     def offer_simple(xml, product, cat)
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
-      opt = { :id => product.id,  :available => product.available? }
+      opt = { :id => product.id,  :available => product.active? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         individual_xml(xml, product, cat, product_properties)
