@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Export
   class GarpunExporter < YandexMarketExporter
     def initialize

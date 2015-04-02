@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Export
   class YandexMarketAdditionalExporter < YandexMarketExporter
     def individual_xml(xml, product, cat, product_properties)
