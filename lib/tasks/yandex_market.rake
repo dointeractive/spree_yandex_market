@@ -12,54 +12,11 @@ namespace :spree_yandex_market do
     end
   end
 
-  desc "Generate Yandex.Market export file"
-  task :generate_ym => :environment do
-    generate_export_file
-  end
-
-  desc "Generate Torg.mail.ru export file"
-  task :generate_torg_mail_ru => :environment do
-    generate_export_file 'torg_mail_ru'
-  end
-
-  desc "Generates Olx export file"
-  task :generate_olx => :environment do
-    generate_export_file 'olx'
-  end
-
-  desc "Generates Kupitigra export file"
-  task :generate_kupitigra => :environment do
-    generate_export_file 'kupitigra'
-  end
-
-  desc "Generates Wikimart export file"
-  task :generate_wikimart => :environment do
-    generate_export_file 'wikimart'
-  end
-
-  desc 'Generates MailRu export file'
-  task :generate_mail_ru => :environment do
-    generate_export_file 'mail_ru'
-  end
-
-  desc "Generates Lookmart export file"
-  task :generate_lookmart => :environment do
-    generate_export_file 'lookmart'
-  end
-
-  desc "Generate Yandex.Market.With.Discount export file"
-  task :generate_ym_with_discount => :environment do
-    generate_export_file 'yandex_market_with_discount'
-  end
-
-  desc "Generate Yandex.Market.Additional export file"
-  task :generate_ym_additional => :environment do
-    generate_export_file 'yandex_market_additional'
-  end
-
-  desc "Generate Garpun export file"
-  task :generate_garpun => :environment do
-    generate_export_file 'garpun'
+  %w(ym garpun adwords price comprice mixunitorg_mail_ru olx kupitigra wikimart mail_ru lookmart yandex_market_with_discount yandex_market_additional).each do |yml|
+    desc "Generate #{yml} export file"
+    task :"generate_#{yml}" => :environment do
+      generate_export_file yml
+    end
   end
 
   def generate_export_file(ts='yandex_market')
