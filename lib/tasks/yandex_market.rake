@@ -20,16 +20,13 @@ namespace :spree_yandex_market do
   end
 
   def generate_export_file(ts='yandex_market')
-    require File.expand_path(File.join(Rails.root, "config/environment"))
-    require File.join(File.dirname(__FILE__), '..', "export/#{ts}_exporter.rb")
-    
     directory = File.join(Rails.root, 'public', "#{ts}")
     mkdir_p directory unless File.exist?(directory)
-    
+
     ::Time::DATE_FORMATS[:ym] = "%Y-%m-%d %H:%M"
-    
+
     yml_xml = Export.const_get("#{ts.camelize}Exporter").new.export
-    
+
     puts 'Saving file...'
 
     # Создаем файл, сохраняем в нужной папке,
@@ -39,7 +36,7 @@ namespace :spree_yandex_market do
     tfile.close
 
     puts 'Creating symlink...'
-    
+
     # Делаем симлинк на ссылку файла yandex_market_last.gz
     `ln -sf "#{tfile.path}" "#{File.join(directory, "#{ts}.xml")}"`
 
@@ -50,7 +47,7 @@ namespace :spree_yandex_market do
     @export_files = Dir[File.join(directory, '**', '*')]\
                     .map { |x| [File.basename(x), File.mtime(x)] }\
                     .sort { |x, y| y.last <=> x.last }
-    
+
     e = @export_files.find { |x| x.first == "#{ts}.gz" }
     @export_files.reject! { |x| x.first == "#{ts}.gz" }
     @export_files.unshift(e)
