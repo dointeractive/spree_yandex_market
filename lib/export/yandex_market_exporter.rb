@@ -83,20 +83,19 @@ module Export
     end
 
     def shared_xml(xml, product, cat)
-      xml.url prepare_product_url(product)
+      xml.url get_product_url(product)
       xml.price product.price
       xml.currencyId @currencies.first.first
       xml.categoryId cat.id
       xml.picture path_to_url(CGI.escape(product.images.first.attachment.url(:product, false))) unless product.images.empty?
     end
 
-    def prepare_product_url(product)
+    def get_product_url(product)
       product_url(product, host: @host)
     end
 
     def individual_xml(xml, product, cat, product_properties = {})
       xml.delivery            true
-      xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
       xml.name                product.name
       xml.vendorCode          product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_country_of_manufacturer].present?
       xml.description         product.description if product.description.present?
