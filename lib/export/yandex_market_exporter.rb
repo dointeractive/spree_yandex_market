@@ -54,14 +54,7 @@ module Export
             }
 
             xml.offers { # список товаров
-              products = Spree::Product.active
-                .joins(:taxons).merge(Spree::Taxon.published)
-                .where(export_to_yandex_market: true)
-                .group_by_products_id
-
-              products = products.on_hand if @config.preferred_wares == "on_hand"
-              products = products.joins(:taxons).where(spree_taxons: { export_to_yandex_market: true })
-              products.find_each do |product|
+              get_products.find_each do |product|
                 offer(xml, product, product.taxons.first)
               end
             }
@@ -71,6 +64,15 @@ module Export
 
     end
 
+    def get_products
+      products = Spree::Product.active
+        .joins(:taxons).merge(Spree::Taxon.published)
+        .where(export_to_yandex_market: true)
+        .group_by_products_id
+
+      products = products.on_hand if @config.preferred_wares == "on_hand"
+      products.joins(:taxons).where(spree_taxons: { export_to_yandex_market: true })
+    end
 
     private
 
