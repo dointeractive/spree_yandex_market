@@ -12,7 +12,16 @@ namespace :spree_yandex_market do
     end
   end
 
-  %w(yandex_market garpun adwords price comprice mixuni torg_mail_ru olx kupitigra wikimart mail_ru lookmart yandex_market_additional yandex_market_without_utm).each do |yml|
+  %w(
+      garpun adwords price comprice mixuni torg_mail_ru olx kupitigra wikimart mail_ru lookmart
+      yandex_market
+      yandex_market_additional
+      yandex_market_without_utm
+      yandex_market_all
+      yandex_market_sku
+      yandex_market_sku_all
+      yandex_market_sku_without_utm
+    ).each do |yml|
     desc "Generate #{yml} export file"
     task :"generate_#{yml}" => :environment do
       generate_export_file yml
