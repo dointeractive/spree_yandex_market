@@ -17,10 +17,10 @@ namespace :spree_yandex_market do
       yandex_market
       yandex_market_additional
       yandex_market_without_utm
-      yandex_market_id_all
+      yandex_market_all
       yandex_market_sku
       yandex_market_sku_all
-      yandex_market_sku_clear
+      yandex_market_sku_without_utm
     ).each do |yml|
     desc "Generate #{yml} export file"
     task :"generate_#{yml}" => :environment do

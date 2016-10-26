@@ -1,5 +1,5 @@
 module Export
-  class YandexMarketSkuClearExporter < YandexMarketExporter
+  class YandexMarketSkuWithoutUtmExporter < YandexMarketExporter
 
     def offer_simple(xml, product, cat)
       product_properties = {}

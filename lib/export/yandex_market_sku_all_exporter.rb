@@ -12,11 +12,7 @@ module Export
     end
 
     def get_products
-      Spree::Product.joins(:taxons)
-        .where(
-          export_to_yandex_market: true,
-          spree_taxons: { export_to_yandex_market: true, published: true }
-        ).group_by_products_id
+      Spree::Product.not_gifts.joins(:taxons).group_by_products_id
     end
 
     private
