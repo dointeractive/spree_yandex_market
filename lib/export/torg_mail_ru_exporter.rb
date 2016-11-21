@@ -25,12 +25,12 @@ module Export
             end
 
             xml.categories do
-              Spree::Taxon.published.where(export_to_yandex_market: true).drop(1).each do |taxon|
-                xml.category id: taxon.id, parentId: taxon.parent_id do
-                  xml.text taxon.name
+              (Spree::Taxon.published.where(export_to_yandex_market: true) - [Spree::Taxon.root])
+                .each do |taxon|
+                  xml.category id: taxon.id, parentId: taxon.parent_id do
+                    xml.text taxon.name
+                  end
                 end
-              end
-
             end
 
             xml.offers do
